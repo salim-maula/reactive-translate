@@ -11,40 +11,42 @@ class HomeController extends GetxController {
   RxString description = ''.obs;
   final isSelectedKorea = false.obs;
   final isSelectedEnglish = true.obs;
+  RxList listDesc = [].obs;
 
   Future getNews() async {
     final response = await apiService.getNews();
     response.when(success: (data) {
       newsList.value = data.articles!;
-      for(Article article in newsList){
-         description.value = article.description!;
+      for (int index = 0; index < newsList.length; index++) {
+        description.value = newsList[index].description!;
+        listDesc.add(description.value);
       }
+      print(listDesc);
+      // for (Article article in newsList) {
+      //   description.value = article.description!;
+      // }
     }, failure: ((error, stackTrace) {
       print('Error');
     }));
   }
 
   Future<void> translateDescriptionToKor() async {
-    for (Article article in newsList) {
-      if (article.description != null) {
-        final translatedDescription = await translator
-            .translate(article.description!, from: 'en', to: 'ko');
-        article.description = translatedDescription.text;
-        description.value = article.description!;
-        // print(article.description);
-      }
+    for (int index = 0; index < listDesc.length; index++) {
+      description.value = listDesc[index];
+      final translatedDescription =
+          await translator.translate(description.value, from: 'en', to: 'ko');
+
+      listDesc[index] = translatedDescription.toString();
     }
   }
 
   Future<void> translateDescriptionToEng() async {
-    for (Article article in newsList) {
-      if (article.description != null) {
-        final translatedDescription = await translator
-            .translate(article.description!, from: 'ko', to: 'en');
-        article.description = translatedDescription.text;
-        description.value = article.description!;
-        // print(article.description);
-      }
+    for (int index = 0; index < listDesc.length; index++) {
+      description.value = listDesc[index];
+      final translatedDescription =
+          await translator.translate(description.value, from: 'ko', to: 'en');
+
+      listDesc[index] = translatedDescription.toString();
     }
   }
 

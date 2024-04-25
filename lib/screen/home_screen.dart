@@ -17,7 +17,8 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: () {
-                        controller.isSelectedEnglish.value =
+                        if (controller.isSelectedEnglish.value ==false) {
+                          controller.isSelectedEnglish.value =
                             !controller.isSelectedEnglish.value;
 
                         controller.isSelectedKorea.value =
@@ -26,6 +27,8 @@ class HomeScreen extends StatelessWidget {
                         if (controller.isSelectedEnglish.value) {
                           controller.translateDescriptionToEng();
                         }
+                        }
+                        
                       },
                       child: Row(
                         children: [
@@ -38,7 +41,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        controller.isSelectedEnglish.value =
+                        if (controller.isSelectedKorea.value == false) {
+                           controller.isSelectedEnglish.value =
                             !controller.isSelectedEnglish.value;
 
                         controller.isSelectedKorea.value =
@@ -47,6 +51,8 @@ class HomeScreen extends StatelessWidget {
                             if (controller.isSelectedKorea.value) {
                           controller.translateDescriptionToKor();
                         }
+                        }
+                       
                       },
                       child: Row(
                         children: [
@@ -69,8 +75,8 @@ class HomeScreen extends StatelessWidget {
                   ),
               itemCount: controller.newsList.length,
               itemBuilder: (conte, index) {
-                var desc = controller.newsList[index].description!;
-                controller.translator.translate(desc, from: 'en', to: 'ko');
+                // var desc = controller.newsList[index].description!;
+                // controller.translator.translate(desc, from: 'en', to: 'ko');
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -83,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                       height: 4,
                     ),
                     Obx(() {
-                      return Text(controller.description.value);
+                      return Text(controller.listDesc[index]);
                     })
                   ],
                 );
